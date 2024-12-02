@@ -31,6 +31,12 @@ router.put('/cancel',verifySecret,async (req,res)=>{
 router.get('/get',verifySecret,async (req,res)=>{
     const products = await prisma.shipping.findMany();
     return res.status(200).send(products)
+});
+
+router.get('/shipping/get?userId=101',verifySecret,async(req,res) => {
+    // const id = req.params
+    const products = await prisma.shipping.findUnique({where:{userId:101}})
+    return res.status(200).send(products)
 })
 
 
