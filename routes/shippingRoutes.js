@@ -23,13 +23,8 @@ router.put('/cancel',verifySecret,async (req,res)=>{
         })
     }
     const {userId,productId,count} = await prisma.shipping.findUnique({where:{id:parseInt(id)}})
-    return res.status(200).send({ 
-        id ,
-        userId ,
-        productId ,
-        count ,
-        status: "cancelled" 
-    })
+    const product = await prisma.shipping.update({where:{id:parseInt(id)},data:{id,userId,productId,count,status: "cancelled"}})
+    return res.status(200).send({id:product.id,userId:product.userId,productId:product.productId,count:product.count,status:product.status})
 
 });
 
