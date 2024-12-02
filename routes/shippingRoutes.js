@@ -33,9 +33,9 @@ router.get('/get',verifySecret,async (req,res)=>{
     return res.status(200).send(products)
 });
 
-router.get('/shipping/get?userId=2',verifySecret,async(req,res) => {
-    // const id = req.params
-    const products = await prisma.shipping.findUnique({where:{userId:2}})
+router.get('/shipping/get?userId=id',verifySecret,async(req,res) => {
+    const id = req.query
+    const products = await prisma.shipping.findUnique({where:{userId:id}})
     return res.status(200).send(products)
 })
 
