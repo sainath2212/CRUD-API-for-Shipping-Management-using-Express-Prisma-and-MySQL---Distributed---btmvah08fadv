@@ -33,11 +33,18 @@ router.get('/get',verifySecret,async (req,res)=>{
     return res.status(200).send(products)
 });
 
-router.get('/shipping/get?userId=id',verifySecret,async(req,res) => {
-    const userId = req.query
-    const products = await prisma.shipping.findUnique({where:{userId:parseInt(userId)}})
-    return res.status(200).send(products)
-})
+router.get('/shipping/get', verifySecret, async (req, res) => {
+    try {
+        const { userId } = req.query;
+        if (!userId) {
+            return sendError(res, "Missing userId query parameter", 400);
+        }
+        const products = await prisma.shipping.findMany({ where: { userId: parseInt(userId) } });
+        return res.status(200).send(products);
+    } catch (error) {
+        return sendError(res, "Failed to fetch shipping entries for user", 500);
+    }
+});
 
 
 module.exports = router
